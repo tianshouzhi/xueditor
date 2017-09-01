@@ -9,7 +9,7 @@ xueditor对java版本的源码进行了改造，支持自定义上传文件的�
 
     <dependency>
           <groupId>com.tianshouzhi</groupId>
-          <artifactId>xueditor</artifactId>
+          <artifactId>xueditor-core</artifactId>
           <version>1.0.0</version>
     </dependency>
 
