@@ -15,6 +15,7 @@ xueditor对java版本的源码进行了改造，支持自定义上传文件的�
 
 #### 2 自定义上传实现类
 xueditor提供了一个接口Uploader，自定义上传实现类需要实现这个接口。以下是笔者编写的一个上传到阿里云oss的Uploader实现。
+(如果使用其他的云存储，实现方案也类似，只需要自己编写一个类实现Uploader接口即可)
 
 引入阿里云oss sdk依赖
 
@@ -51,13 +52,10 @@ AliyunOSSUploader.java
 bucketName：图片上传到哪个bucket<br/>
 ACCESS_PREFIX:表示外网域名<br/>
 endpoint：是上传文件的域名
+accessKeyId
+accessKeySecret
 
-其中bucketName就是我们创建bucket时指定的名字 ，例如下图中，b2b2cmall和tiansouzhi，就是我创建的2个bucket<br>
-选择要上传的bucket,我这里选择的是tianshouzhi，可以看到endpoint和外网域名的信息
-![](doc/aliyun-domain.png)
-
-accessKeyId和accessKeySecret可以点击概览界面的accessKey按钮看到
-![](doc/accessKey.png)
+请读者自行在阿里云OSS控制台上查找相关配置项的值
 
 ####3 在web.xml中配置servlet，并指定自定上传实现类
     <servlet>
@@ -71,3 +69,5 @@ accessKeyId和accessKeySecret可以点击概览界面的accessKey按钮看到
 
 ####4 修改ueditor.config.js文件的上传路径，将serverUrl值改为/upload
 ![](doc/upload.png)
+
+#### 5 完整使用案例参考
