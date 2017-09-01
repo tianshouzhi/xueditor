@@ -70,4 +70,4 @@ accessKeySecret
 ####4 修改ueditor.config.js文件的上传路径，将serverUrl值改为/upload
 ![](doc/upload.png)
 
-#### 5 完整使用案例参考
+#### 5 完整使用案例参考子模块xueditor-demo
