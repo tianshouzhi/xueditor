@@ -18,7 +18,7 @@
         </developer>
     </developers>
     <scm>
-        <url>https://github.com/tianshouzhi/dragon</url>
+        <url>https://github.com/tianshouzhi/xueditor</url>
         <connection>https://github.com/tianshouzhi/xuedtior.git</connection>
         <developerConnection>http://www.tianshouzhi.com</developerConnection>
     </scm>

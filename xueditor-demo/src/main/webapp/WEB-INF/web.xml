@@ -1,0 +1,22 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+    <display-name>Archetype Created Web Application</display-name>
+    <servlet>
+        <servlet-name>ueditor</servlet-name>
+        <servlet-class>com.tianshouzhi.xueditor.servlet.XUeditorServlet</servlet-class>
+        <init-param>
+            <param-name>uploadImpl</param-name>
+            <param-value>com.tianshouzhi.AliyunOSSUploader</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ueditor</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>/index.html</welcome-file>
+    </welcome-file-list>
+</web-app>
