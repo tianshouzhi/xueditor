@@ -8,9 +8,8 @@
     <artifactId>xueditor</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+
+    <url>https://github.com/tianshouzhi/xueditor</url>
     <description>Promotion of ueditor,support custom upload file destination.</description>
     <developers>
         <developer>
@@ -34,7 +33,9 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <profiles>
         <profile>
             <id>release</id>
