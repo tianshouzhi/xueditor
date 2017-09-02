@@ -60,7 +60,7 @@ accessKeySecret
 #### 3 在web.xml中配置servlet，并指定自定上传实现类
     
     <servlet>
-        <servlet-name>ueditor</servlet-name>
+        <servlet-name>XUeditorServlet</servlet-name>
         <servlet-class>com.tianshouzhi.xueditor.servlet.XUeditorServlet</servlet-class>
         <init-param>
                <param-name>uploadImpl</param-name>
@@ -69,11 +69,12 @@ accessKeySecret
         </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ueditor</servlet-name>
+        <servlet-name>XUeditorServlet</servlet-name>
         <url-pattern>/upload</url-pattern>
     </servlet-mapping>
 
-#### 4 修改ueditor.config.js文件的上传路径，将serverUrl值改为/upload
+#### 4 修改ueditor.config.js文件的上传路径
+将serverUrl值改为XUeditorServlet映射的地址，很明显在这里就是<code>/upload</code>
 ![](doc/upload.png)
 
 #### 5 完整使用案例参考子模块[xueditor-demo](xueditor-demo)
