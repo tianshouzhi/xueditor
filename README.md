@@ -51,8 +51,8 @@ AliyunOSSUploader.java
 
 bucketName：图片上传到哪个bucket<br/>
 ACCESS_PREFIX:表示外网域名<br/>
-endpoint：是上传文件的域名
-accessKeyId
+endpoint：是上传文件的域名<br/>
+accessKeyId<br/>
 accessKeySecret
 
 请读者自行在阿里云OSS控制台上查找相关配置项的值
