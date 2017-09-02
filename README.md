@@ -73,6 +73,8 @@ accessKeySecret
         <url-pattern>/upload</url-pattern>
     </servlet-mapping>
 
+如果不需要自定义上传实现类，则把<init-param>标签移除，此时还是会按照ueditor原有的逻辑，将上传文件保存的本地。
+
 #### 4 修改ueditor.config.js文件的上传路径
 将serverUrl值改为XUeditorServlet映射的地址，很明显在这里就是<code>/upload</code>
 ![](doc/upload.png)
