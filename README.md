@@ -57,18 +57,23 @@ accessKeySecret
 
 请读者自行在阿里云OSS控制台上查找相关配置项的值
 
-####3 在web.xml中配置servlet，并指定自定上传实现类
+#### 3 在web.xml中配置servlet，并指定自定上传实现类
     
     <servlet>
         <servlet-name>ueditor</servlet-name>
         <servlet-class>com.tianshouzhi.xueditor.servlet.XUeditorServlet</servlet-class>
+        <init-param>
+               <param-name>uploadImpl</param-name>
+               <!--指定自定义的Uploader实现类-->
+               <param-value>com.tianshouzhi.AliyunOSSUploader</param-value>
+        </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>ueditor</servlet-name>
         <url-pattern>/upload</url-pattern>
     </servlet-mapping>
 
-####4 修改ueditor.config.js文件的上传路径，将serverUrl值改为/upload
+#### 4 修改ueditor.config.js文件的上传路径，将serverUrl值改为/upload
 ![](doc/upload.png)
 
 #### 5 完整使用案例参考子模块[xueditor-demo](xueditor-demo)
