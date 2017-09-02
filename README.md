@@ -78,3 +78,5 @@ accessKeySecret
 ![](doc/upload.png)
 
 #### 5 完整使用案例参考子模块[xueditor-demo](xueditor-demo)
+
+笔者博客地址: [http://www.tianshouzhi.com/](http://www.tianshouzhi.com/)
