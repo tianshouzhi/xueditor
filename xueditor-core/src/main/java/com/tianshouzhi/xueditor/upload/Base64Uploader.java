@@ -1,18 +1,19 @@
 package com.tianshouzhi.xueditor.upload;
 
-import com.tianshouzhi.xueditor.PathFormat;
+import com.tianshouzhi.xueditor.*;
 import com.tianshouzhi.xueditor.define.AppInfo;
 import com.tianshouzhi.xueditor.define.BaseState;
 import com.tianshouzhi.xueditor.define.FileType;
 import com.tianshouzhi.xueditor.define.State;
 
+import java.io.ByteArrayInputStream;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 
 public final class Base64Uploader {
 
-	public static State save(String content, Map<String, Object> conf) {
+	public static State save(String content, Map<String, Object> conf, com.tianshouzhi.xueditor.Uploader uploader) {
 		
 		byte[] data = decode(content);
 
@@ -30,8 +31,22 @@ public final class Base64Uploader {
 		savePath = savePath + suffix;
 		String physicalPath = (String) conf.get("rootPath") + savePath;
 
-		State storageState = StorageManager.saveBinaryFile(data, physicalPath);
-
+		State storageState = null;
+		if(uploader != null){
+			BaseState tempState = new BaseState(false);
+			try {
+				savePath = uploader.upload(new ByteArrayInputStream(data), savePath);
+				tempState.setState(true);
+				tempState.putInfo("size", data.length);
+				tempState.putInfo("title", (String) conf.get("filename"));
+				storageState = tempState;
+			} catch (Exception e) {
+				storageState = new BaseState(false, AppInfo.IO_ERROR);
+			}
+		}
+		else{
+			storageState = StorageManager.saveBinaryFile(data, physicalPath);
+		}
 		if (storageState.isSuccess()) {
 			storageState.putInfo("url", PathFormat.format(savePath));
 			storageState.putInfo("type", suffix);

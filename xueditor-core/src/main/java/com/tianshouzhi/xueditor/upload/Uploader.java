@@ -22,7 +22,7 @@ public class Uploader {
 
 		if ("true".equals(this.conf.get("isBase64"))) {
 			state = Base64Uploader.save(this.request.getParameter(filedName),
-					this.conf);
+					this.conf,uploadService);
 		} else {
 			state = BinaryUploader.save(this.request, this.conf,uploadService);
 		}
