@@ -1,14 +1,14 @@
 package com.tianshouzhi.xueditor;
 
 import com.tianshouzhi.xueditor.define.ActionMap;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 配置管理器
@@ -17,16 +17,9 @@ import java.util.Map;
  *
  */
 public final class ConfigManager {
+	
+	private static ConfigManager instance;
 
-	private final String rootPath;
-
-	private final String originalPath;
-
-	private static String configPath;
-
-	private static final String configFileName = "config.json";
-
-	// private String parentPath = null;
 	private JSONObject jsonConfig = null;
 
 	// 涂鸦上传filename定义
@@ -38,41 +31,35 @@ public final class ConfigManager {
 	/*
 	 * 通过一个给定的路径构建一个配置管理器， 该管理器要求地址路径所在目录下必须存在config.properties文件
 	 */
-	private ConfigManager(String rootPath, String contextPath, String uri) throws FileNotFoundException, IOException {
-
-		rootPath = rootPath.replace("\\", "/");
-
-		this.rootPath = rootPath;
-
-		if (contextPath.length() > 0) {
-			this.originalPath = this.rootPath + uri.substring(contextPath.length());
-		} else {
-			this.originalPath = this.rootPath + uri;
-		}
-
-		this.initEnv();
-
+	private ConfigManager(JSONObject jsonConfig) throws IOException {
+		this.jsonConfig=jsonConfig;
 	}
 
 	/**
 	 * 配置管理器构造工厂
-	 * 
-	 * @param rootPath
 	 *           服务器根路径
-	 * @param contextPath
-	 *           服务器所在项目路径
-	 * @param uri
-	 *           当前访问的uri
 	 * @return 配置管理器实例或者null
 	 */
-	public static ConfigManager getInstance(String rootPath, String contextPath, String uri) {
-
-		try {
-			return new ConfigManager(rootPath, contextPath, uri);
-		} catch (Exception e) {
-			return null;
+	public static ConfigManager getInstance(HttpServletRequest request,String configPath)
+	      throws IOException {
+		if (instance == null) {
+			synchronized (ConfigManager.class) {
+				if (instance == null) {
+					ServletContext servletContext = request.getSession(false).getServletContext();
+					InputStream configStream = servletContext.getClass().getClassLoader().getResourceAsStream(configPath);
+					if (configStream == null) {
+						configStream = servletContext.getResourceAsStream(configPath);
+					}
+					if(configStream==null){
+						throw new RuntimeException("can't find ueditor config file ["+configPath+"]");
+					}
+					String configContent = IOUtils.toString(configStream);
+					JSONObject jsonConfig = new JSONObject(configContent);
+					instance = new ConfigManager(jsonConfig);
+				}
+			}
 		}
-
+		return instance;
 	}
 
 	// 验证配置文件加载是否正确
@@ -148,62 +135,9 @@ public final class ConfigManager {
 		}
 
 		conf.put("savePath", savePath);
-		conf.put("rootPath", this.rootPath);
 
 		return conf;
 
-	}
-
-	private void initEnv() throws FileNotFoundException, IOException {
-
-		File file = new File(this.originalPath);
-
-		if (!file.isAbsolute()) {
-			file = new File(file.getAbsolutePath());
-		}
-
-		String configContent = this.readFile(getConfigPath());
-
-		try {
-			JSONObject jsonConfig = new JSONObject(configContent);
-			this.jsonConfig = jsonConfig;
-		} catch (Exception e) {
-			this.jsonConfig = null;
-		}
-
-	}
-
-	private  String getConfigPath() {
-		if(configPath==null){
-			synchronized(ConfigManager.class){
-				if(configPath==null){
-					ArrayList<String> result = new ArrayList<String>();
-					getConfigPath(rootPath, configFileName, result);
-					if (result.size() != 1) {
-						throw new RuntimeException("can't find config.json");
-					}
-					configPath=result.get(0);
-				}
-			}
-
-		}
-
-		return configPath;
-		// return this.originalPath + File.separator + ConfigManager.configFileName;
-	}
-
-	public static void getConfigPath(String path, String configFileName, List<String> result) {
-		File file = new File(path);
-		if (file.isDirectory()) {
-			File[] files = file.listFiles();
-			for (File child : files) {
-				getConfigPath(child.getAbsolutePath(), configFileName, result);
-			}
-		} else {
-			if (path.contains(configFileName)) {
-				result.add(path);
-			}
-		}
 	}
 
 	private String[] getArray(String key) {
@@ -218,37 +152,4 @@ public final class ConfigManager {
 		return result;
 
 	}
-
-	private String readFile(String path) throws IOException {
-
-		StringBuilder builder = new StringBuilder();
-
-		try {
-
-			InputStreamReader reader = new InputStreamReader(new FileInputStream(path), "UTF-8");
-			BufferedReader bfReader = new BufferedReader(reader);
-
-			String tmpContent = null;
-
-			while ((tmpContent = bfReader.readLine()) != null) {
-				builder.append(tmpContent);
-			}
-
-			bfReader.close();
-
-		} catch (UnsupportedEncodingException e) {
-			// 忽略
-		}
-
-		return this.filter(builder.toString());
-
-	}
-
-	// 过滤输入字符串, 剔除多行注释以及替换掉反斜杠
-	private String filter(String input) {
-
-		return input.replaceAll("/\\*[\\s\\S]*?\\*/", "");
-
-	}
-
 }
