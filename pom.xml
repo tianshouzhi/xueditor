@@ -7,7 +7,7 @@
     <groupId>com.tianshouzhi</groupId>
     <artifactId>xueditor</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <name>xueditor</name>
     <url>https://github.com/tianshouzhi/xueditor</url>
     <description>Promotion of ueditor,support custom upload file destination.</description>

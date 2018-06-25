@@ -42,24 +42,17 @@ public final class ConfigManager {
 	 */
 	public static ConfigManager getInstance(HttpServletRequest request,String configPath)
 	      throws IOException {
-		if (instance == null) {
-			synchronized (ConfigManager.class) {
-				if (instance == null) {
-					ServletContext servletContext = request.getSession(false).getServletContext();
-					InputStream configStream = servletContext.getClass().getClassLoader().getResourceAsStream(configPath);
-					if (configStream == null) {
-						configStream = servletContext.getResourceAsStream(configPath);
-					}
-					if(configStream==null){
-						throw new RuntimeException("can't find ueditor config file ["+configPath+"]");
-					}
-					String configContent = IOUtils.toString(configStream);
-					JSONObject jsonConfig = new JSONObject(configContent);
-					instance = new ConfigManager(jsonConfig);
-				}
-			}
+		ServletContext servletContext = request.getSession(false).getServletContext();
+		InputStream configStream = servletContext.getClass().getClassLoader().getResourceAsStream(configPath);
+		if (configStream == null) {
+			configStream = servletContext.getResourceAsStream(configPath);
 		}
-		return instance;
+		if(configStream==null){
+			throw new RuntimeException("can't find ueditor config file from classpath ["+configPath+"]");
+		}
+		String configContent = IOUtils.toString(configStream);
+		JSONObject jsonConfig = new JSONObject(configContent);
+		return new ConfigManager(jsonConfig);
 	}
 
 	// 验证配置文件加载是否正确

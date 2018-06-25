@@ -8,7 +8,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -45,10 +44,6 @@ public class XUeditorServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setHeader("Content-Type", "text/html");
 		String rootPath = request.getSession().getServletContext().getRealPath("/");
-		if (new File(rootPath).list().length == 0) {
-			// 处理spring boot case
-			rootPath = this.getClass().getClassLoader().getResource("static").getFile();
-		}
 		String result = new ActionEnter(request, rootPath, uploader,configPath).exec();
 		response.getWriter().write(result);
 	}
